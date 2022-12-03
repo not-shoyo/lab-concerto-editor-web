@@ -34,6 +34,7 @@ const ConceptPropertyPage = ({ model, concept, property }: { model: IModel, conc
     const {
         register,
         reset,
+        setValue,
         control,
         handleSubmit,
         formState: { errors }
@@ -43,7 +44,23 @@ const ConceptPropertyPage = ({ model, concept, property }: { model: IModel, conc
 
     useEffect(() => {
         reset(property);
-    }, [property, reset]);
+
+        if (!!!property.name) {
+            setValue('name', '');
+        }
+
+        if (!!!property.defaultValue) {
+            setValue('defaultValue', '');
+        }
+
+        if (!!!property.validator?.lower) {
+            setValue('validator.lower', undefined);
+        }
+
+        if (!!!property.validator?.upper) {
+            setValue('validator.upper', undefined);
+        }
+    }, [property, reset, setValue]);
 
     const onSubmit = (data: any) => {
         if (data.defaultValue) {
@@ -57,7 +74,7 @@ const ConceptPropertyPage = ({ model, concept, property }: { model: IModel, conc
             }
         }
         if (data.validator) {
-            if (data.validator.lower === "" && data.validator.upper === "") {
+            if (!data.validator.lower && !data.validator.upper) {
                 data.validator = null;
             }
             else if (isNumericProperty(property)){
@@ -65,9 +82,6 @@ const ConceptPropertyPage = ({ model, concept, property }: { model: IModel, conc
                     lower : data.validator.lower ? Number(data.validator.lower) : null,
                     upper : data.validator.upper ? Number(data.validator.upper) : null,
                 };
-                if (data.validator.lower && data.validator.upper && data.validator.lower > data.validator.upper) {
-                    data.validator = null;
-                }
             }
             else {
                 data.validator = null;
