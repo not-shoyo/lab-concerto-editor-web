@@ -12,7 +12,7 @@ function PropertySheet() {
     const editorProperty = useStore(state => state.editorProperty);
     const editorNamespace = useStore(state => state.editorNamespace);
     if (editorProperty) {
-        if (editorNamespace && editorConcept && editorConcept && isEnum(editorConcept)) {
+        if (editorNamespace && editorConcept && isEnum(editorConcept)) {
             return <EnumPropertyPage model={editorNamespace} enumDeclaration={editorConcept as IEnumDeclaration} property={editorProperty as IEnumProperty}/>
         }
         else {
