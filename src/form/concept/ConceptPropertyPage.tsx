@@ -82,6 +82,9 @@ const ConceptPropertyPage = ({ model, concept, property }: { model: IModel, conc
                     lower : data.validator.lower ? Number(data.validator.lower) : null,
                     upper : data.validator.upper ? Number(data.validator.upper) : null,
                 };
+                if (data.validator.lower && data.validator.upper && data.validator.lower > data.validator.upper) {
+                    data.validator = null;
+                }
             }
             else {
                 data.validator = null;
@@ -103,6 +106,7 @@ const ConceptPropertyPage = ({ model, concept, property }: { model: IModel, conc
             ...property,
             ...data
         }
+        console.log(newData);
         conceptPropertyUpdated(model.namespace, concept.name, property.name, newData);
     };
 
